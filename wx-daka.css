@@ -1,0 +1,31 @@
+@CHARSET "UTF-8";
+.wx-content {
+    padding: 25px 15px;
+}
+.page__bd_spacing {
+    padding: 40px 15px 10px 15px;
+	text-align: center;
+}
+.page__bd .placeholder {
+    margin: 5px;
+    padding: 0 10px;
+    background-color: #ebebeb;
+    height: 2.3em;
+    line-height: 2.3em;
+    text-align: center;
+    /* color: #cfcfcf; */
+}
+#current_time{
+	text-align: center;
+}
+#daka-area p{
+	line-height: 40px;
+	text-align: center;
+	color: #888;
+}
+#wx-group-img{
+	margin: 30px auto;
+	max-width:50%;
+	width:150px;
+	vertical-align:middle;
+}

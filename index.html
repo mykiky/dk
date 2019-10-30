@@ -1,0 +1,134 @@
+ <html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ <meta name="viewport" content="width=device-width,user-scalable=no;" /> 
+	<title>我的打卡</title>
+</head>
+  <link rel="stylesheet" href="weui.css"/>
+  <link rel="stylesheet" href="wx-daka.css"/>
+  <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+<script> 
+var num = 0;
+function dk(){
+	if(num>0){
+		var n = window.confirm("已经成功打卡过，是否继续提交？","提示");
+		if(!n){
+			return;
+		}
+	}
+	
+	var loginUrl = "http://iscas-ztb-weixin02.wisvision.cn/public/crop/dakahandler";
+	var obj = new Object();
+	obj.userid = $("#userId").val();
+	obj.latitude = $("#latitude").val();
+	obj.longitude = $("#longitude").val();
+	var dataJson = JSON.stringify(obj);
+	
+	$.ajax({
+		type:"POST",
+		url:loginUrl,
+		dataType:"json",
+		data:dataJson,
+		async:false,
+		success:function(ret){
+			if(ret==1){
+				alert("信息已发送，请到微信中查看打卡情况!");
+				num++;
+			//window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx905b04cda6b54d1d&redirect_uri=http://iscas-ztb-weixin02.wisvision.cn/public/crop/daka&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
+			}
+		},
+		error:function(ret){
+			alert("信息已发送，请到微信中查看打卡情况!");
+			//window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx905b04cda6b54d1d&redirect_uri=http://iscas-ztb-weixin02.wisvision.cn/public/crop/daka&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
+		}
+		});
+	
+	return false;
+}
+
+
+function GetQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+
+//随机数   
+function rand(b,e){   
+    if(!b && b!=0 || !e){return "?";}   
+    return Math.floor( ( Math.random() * e ) + b );   
+}   
+
+function randInputValue(){
+ 	var  latitude= "39.9782867431"//纬度
+	var longitude = "116.3305816650";//精度
+	var la = rand(1000,8999);
+	var lo = rand(1000,8999);
+	$("#latitude").val(latitude+la);
+	$("#longitude").val(longitude+lo); 
+	return false;
+}
+function checkMm(){
+	if($("#mmInput").val()!="147"){
+		alert("密码错误！请重新输入");
+	}else{
+		$("#checkDiv").hide();
+		$("#dkForm").show();
+	}
+
+}
+</script>
+
+<body onload="randInputValue()">
+<div class="wx-content">
+	<div style="width:100%;text-align: center;" id="checkDiv">
+		 <div class="weui-btn-area" id="daka-area">
+			请输入访问密码： <input class="weui-msg__text-area" style="height:40px;width:75%;font-size:20px;"  type="text" value="" name="mmInput" id="mmInput">
+		</div>
+		<div class="weui-btn-area" id="daka-area">
+			<button  type="button" class="weui-btn weui-btn_primary" onclick="checkMm()" >提交</button>
+		</div>
+	</div>
+<form action="#" onsubmit="return dk()" id="dkForm" style="display:none">
+	<div style="width:100%;text-align: center;">
+		 <div class="weui-btn-area" id="daka-area">
+			纬度： <input class="weui-msg__text-area" style="height:40px;width:75%;font-size:20px;"  type="text" value="39.97828674316406" name="latitude" id="latitude">
+		</div>
+		 <div class="weui-btn-area" id="daka-area">
+			精度： <input class="weui-msg__text-area"  style="height:40px;width:75%;font-size:20px;" type="text" value="116.33058166503906" name="longitude" id="longitude">
+		</div>
+		 <div class="weui-btn-area" id="daka-area">
+			用户： <input class="weui-msg__text-area"  style="height:40px;width:75%;font-size:20px;" type="text" value="" name="userId" id="userId">
+		</div>
+		<div class="weui-msg__desc" id="daka-area">
+		 	提示：“用户”为OA系统的用户名（四位数字）
+		 </div>
+	   <div class="weui-btn-area" id="daka-area">
+			<button  type="submit" class="weui-btn weui-btn_primary" >打卡</button>
+		</div>
+		<div class="weui-btn-area" id="daka-area">
+			<button  type="button" onclick="return randInputValue()" class="weui-btn weui-btn_primary" >随机</button>
+		</div>
+		<div class="weui-btn-area" id="daka-area">
+			<button type="reset"  class="weui-btn weui-btn_primary" >重置</button>
+		</div>
+		<br/><a href="http://123.57.174.192:8081/public/login/tologin">OA系统</a>，
+		<a href="http://124.16.141.187/community/">社区</a>，
+		<a href="http://mail.nfschina.com:6266/nfs/needlogin.action">邮箱</a>，
+		<a href="http://p.nfschina.com:3527/pm">QONE</a>，
+		<a href="http://www.bjbus.com/api/index.php#/bus">实时公交查询</a>
+		<br/>总访问量：<script language="JavaScript" src="http://free.3v.do/count.asp?id=kangkai12345"></script>
+	</div>
+
+</form>
+</div>
+</body>
+<script>
+var userId = GetQueryString("userId");
+if(userId!=null){
+	$("#userId").val(userId);
+}
+</script>
+
+</html>
